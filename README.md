@@ -1,5 +1,5 @@
 # aws-resource-collector
-Python script to collect and document all IAM and KMS resources for an AWS Account.
+Python scripts to collect and document all IAM and KMS resources for an AWS Account.
 
 
 ### IAM Users
@@ -12,6 +12,5 @@ Python script to collect and document all IAM and KMS resources for an AWS Accou
 - `iam/roles.json` will contain a dictionary with each key being the `role name`, and each value being the `policy arns` for each attached iam policy.
 - After the `iam/roles.json` file has been created, run the`iam/list-role-perms.py`. This will create a file for each iam role (filename = role name). Inside each file will contain the json policy for each iam policy that is attached to that role. Each file will be placed inside the `iam/roles/` directory.
 
-
-## KMS Keys
+### KMS Keys
 - To collect data on all the KMS Customer Managed Keys in your AWS account, run the `kms/list-kms-keys.py` script to generate a file for each Customer Managed Key (filename = key alias). Inside each file will contain the json key policy. Each file will be placed inside the `kms/keys/` directory.
