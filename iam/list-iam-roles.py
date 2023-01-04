@@ -1,6 +1,7 @@
 import boto3
 import jmespath
 import json
+import os
 
 AWS_REGION = 'us-east-1'
 iam = boto3.client('iam', region_name=AWS_REGION)
@@ -24,9 +25,9 @@ def get_policy_arn(list_of_role_names):
         aws_roles[role_name] = policy_arns
     return json.dumps(aws_roles, indent=2, default=str)
 
-# print(get_policy_arn(get_role_name()))
-
 if __name__ == "__main__":
     aws_role_policy_arn = get_policy_arn(get_role_name())
-    with open("<REPLACE>/aws-resource-collector/iam/roles.json", "w") as outfile:
+    relative_folder_path = os.path.dirname(__file__)
+    output_filename = os.path.join(relative_folder_path, 'roles.json')
+    with open(output_filename, "w") as outfile:
         outfile.write(aws_role_policy_arn)

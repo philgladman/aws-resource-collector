@@ -1,10 +1,10 @@
 import boto3
 import jmespath
 import json
+import os
 
 AWS_REGION = 'us-east-1'
 iam = boto3.client('iam', region_name=AWS_REGION)
-
 
 def get_user_names():
     """Builds a list of all iam user accounts"""
@@ -52,5 +52,7 @@ if __name__ == "__main__":
     user_names_list = get_user_names()
     aws_users = get_user_policies(user_names_list)
     aws_user_policy_arn = get_group_policies(aws_users)
-    with open("<REPLACE>/aws-resource-collector/iam/users.json", "w") as outfile:
+    relative_folder_path = os.path.dirname(__file__)
+    output_filename = os.path.join(relative_folder_path, 'users.json')
+    with open(output_filename, "w") as outfile:
         outfile.write(aws_user_policy_arn)

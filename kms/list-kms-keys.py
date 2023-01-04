@@ -2,6 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 import jmespath
 import json
+import os
 
 AWS_REGION = 'us-east-1'
 kms = boto3.client('kms', region_name=AWS_REGION)
@@ -48,7 +49,9 @@ def get_cmk_policy(list_of_cmks):
             if key_name != "":
                 key_name_alias = key_name.strip("alias/")
                 try:
-                    with open('<REPLACE>/aws-resource-collector/kms/keys/%s.json' % key_name_alias, "a") as outfile:
+                    relative_folder_path = os.path.dirname(__file__)
+                    output_filename = relative_folder_path + "/keys/" + key_name_alias + ".json"
+                    with open(output_filename, "a") as outfile:
                         outfile.writelines("KEY_NAME: " + key_name_alias)
                         outfile.writelines("\n")
                         response = kms.get_key_policy(KeyId=cmk,PolicyName='default')

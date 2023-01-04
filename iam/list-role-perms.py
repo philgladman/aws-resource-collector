@@ -1,11 +1,14 @@
 import boto3
 import jmespath
 import json
+import os
 
 AWS_REGION = 'us-east-1'
 iam = boto3.client('iam', region_name=AWS_REGION)
 
-f = open ('<REPLACE>/aws-resource-collector/iam/roles.json', "r")
+relative_folder_path = os.path.dirname(__file__)
+input_filename = os.path.join(relative_folder_path, 'roles.json')
+f = open (input_filename, "r")
 data = json.loads(f.read())
 
 for key,values in data.items():
@@ -15,7 +18,8 @@ for key,values in data.items():
 
         policy = iam.get_policy_version(PolicyArn=value, VersionId=policy_default_version)
         policy_formatted = jmespath.search('PolicyVersion.Document', policy)
-        with open('<REPLACE>/aws-resource-collector/iam/roles/%s.json' % key, "a") as outfile:
+        output_filename = relative_folder_path + "/roles/" + key + ".json"
+        with open(output_filename, "a") as outfile:
             outfile.writelines("ROLE NAME: " + key)
             outfile.writelines("\n")
             outfile.writelines("POLICY ARN: " + value)
