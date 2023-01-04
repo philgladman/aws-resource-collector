@@ -20,7 +20,7 @@ def get_user_names():
 
 
 def get_user_policies(user_names_list):
-    """Takes list of iam user acconuts as input, and creates a dictionary that has each iam user, with all of its attached user/group policies"""
+    """Takes list of iam user acconuts as input, and creates a dictionary that has each iam user, with all of its attached user policies"""
     aws_users = {}
     for user_name in user_names_list:
         user_policies = []
