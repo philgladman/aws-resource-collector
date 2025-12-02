@@ -3,8 +3,7 @@ import jmespath
 import json
 import os
 
-AWS_REGION = 'us-east-1'
-iam = boto3.client('iam', region_name=AWS_REGION)
+iam = boto3.client('iam')
 
 def get_user_names():
     """Builds a list of all iam user accounts"""
