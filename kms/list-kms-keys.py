@@ -54,7 +54,13 @@ def get_cmk_policy(list_of_cmks):
             if key_name != "":
                 key_name_alias = key_name.strip("alias/")
                 try:
+                    if len(key_name_alias.split("/")) > 1:
+                        key_prefix = key_name_alias.split("/")[0]
+                        key_prefix_dir = os.path.join(relative_folder_path, 'keys', key_prefix)
+                        if not os.path.exists(key_prefix_dir):
+                            os.makedirs(key_prefix_dir)
                     output_filename = relative_folder_path + "/keys/" + key_name_alias + ".json"
+                    print(f"creating file with policy for key: {key_name_alias}")
                     with open(output_filename, "a") as outfile:
                         outfile.writelines("KEY_NAME: " + key_name_alias)
                         outfile.writelines("\n")
