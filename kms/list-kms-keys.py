@@ -42,6 +42,11 @@ def get_cmks(enabled_key_ids):
 
 def get_cmk_policy(list_of_cmks): 
     """Creates a file for each AWS KMS key. Name of the file = key alias, and the file contents = kms key policy"""
+    relative_folder_path = os.path.dirname(__file__)
+    keys_dir = os.path.join(relative_folder_path, 'keys')
+    if not os.path.exists(keys_dir):
+        os.makedirs(keys_dir)
+
     for cmk in list_of_cmks:
         alias = kms.list_aliases(KeyId=cmk)
         key_names = jmespath.search('Aliases[].AliasName', alias)
@@ -49,7 +54,6 @@ def get_cmk_policy(list_of_cmks):
             if key_name != "":
                 key_name_alias = key_name.strip("alias/")
                 try:
-                    relative_folder_path = os.path.dirname(__file__)
                     output_filename = relative_folder_path + "/keys/" + key_name_alias + ".json"
                     with open(output_filename, "a") as outfile:
                         outfile.writelines("KEY_NAME: " + key_name_alias)
