@@ -6,19 +6,17 @@ import os
 iam = boto3.client('iam')
 
 def get_role_name():
-    roles = iam.list_roles()
-    role_names = jmespath.search('Roles[].RoleName', roles)
-    # role_names_list = []
-    # for i in role_names:
-    #     if "REPLACE" in i:
-    #         role_names_list.append(i)
-
-    # return role_names_list
+    paginator = iam.get_paginator('list_roles')
+    page_iterator = paginator.paginate(PaginationConfig={'MaxItems': 50})
+    role_names = []
+    for page in page_iterator:
+        role_names = jmespath.search('Roles[].RoleName', page) + role_names
     return role_names
 
 def get_policy_arn(list_of_role_names):
     aws_roles = {}
     for role_name in list_of_role_names:
+        print(f"Adding role to file: {role_name}")
         role_perms = iam.list_attached_role_policies(RoleName=role_name)
         policy_arns = jmespath.search('AttachedPolicies[].PolicyArn', role_perms)
         aws_roles[role_name] = policy_arns

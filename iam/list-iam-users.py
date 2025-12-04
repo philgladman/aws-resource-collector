@@ -9,12 +9,6 @@ def get_user_names():
     """Builds a list of all iam user accounts"""
     users = iam.list_users()
     user_names = jmespath.search('Users[].UserName', users)
-    # user_names_list = []
-    # for i in user_names:
-    #     if "REPLACE" in i:
-    #         user_names_list.append(i)
-
-    # return user_names_list
     return user_names
 
 
