@@ -4,8 +4,7 @@ import jmespath
 import json
 import os
 
-AWS_REGION = 'us-east-1'
-kms = boto3.client('kms', region_name=AWS_REGION)
+kms = boto3.client('kms')
 
 keys = kms.list_keys()
 key_ids = jmespath.search('Keys[].KeyId', keys)
