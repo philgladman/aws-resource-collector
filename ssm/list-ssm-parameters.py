@@ -20,13 +20,12 @@ def get_parameters():
 
 def get_parameter_data(parameters):
     for parameter in parameters:
-        print("#"*50)
         parameter_details = ssm.get_parameter(Name=parameter, WithDecryption=True)['Parameter']
         print(f"creating file with for ssm parameter: {parameter}")
-        parameter_output_filename = parameters_dir + "/" + parameter + ".json"
+        parameter_formatted = parameter.replace("/", "_slash_")
+        parameter_output_filename = parameters_dir + "/" + parameter_formatted + ".json"
         with open(parameter_output_filename, "a") as outfile:
             outfile.write(json.dumps(parameter_details, indent=2, default=str))
-        print("#"*50)
 
 if __name__ == "__main__":
     parameters = get_parameters()
