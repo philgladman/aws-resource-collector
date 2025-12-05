@@ -12,7 +12,7 @@ if not os.path.exists(parameters_dir):
 
 def get_parameters():
     paginator = ssm.get_paginator('describe_parameters')
-    page_iterator = paginator.paginate(PaginationConfig={'MaxItems': 50})
+    page_iterator = paginator.paginate(PaginationConfig={'PageSize': 50})
     parameter_names = []
     for page in page_iterator:
         parameter_names = jmespath.search('Parameters[].Name', page) + parameter_names
@@ -30,8 +30,8 @@ def get_parameter_data(parameters):
 
 if __name__ == "__main__":
     parameters = get_parameters()
-    print(parameters)
-    get_parameter_data(parameters)
     output_filename = os.path.join(relative_folder_path, 'parameters.json')
     with open(output_filename, "a") as outfile:
         outfile.write(json.dumps(parameters, indent=2, default=str))
+    get_parameter_data(parameters)
+

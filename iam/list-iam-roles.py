@@ -7,7 +7,7 @@ iam = boto3.client('iam')
 
 def get_role_name():
     paginator = iam.get_paginator('list_roles')
-    page_iterator = paginator.paginate(PaginationConfig={'MaxItems': 50})
+    page_iterator = paginator.paginate(PaginationConfig={'PageSize': 50})
     role_names = []
     for page in page_iterator:
         role_names = jmespath.search('Roles[].RoleName', page) + role_names
