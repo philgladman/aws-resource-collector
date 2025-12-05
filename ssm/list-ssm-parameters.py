@@ -12,7 +12,7 @@ if not os.path.exists(parameters_dir):
 
 def get_parameters():
     paginator = ssm.get_paginator('describe_parameters')
-    page_iterator = paginator.paginate()
+    page_iterator = paginator.paginate(PaginationConfig={'MaxItems': 50})
     parameter_names = []
     for page in page_iterator:
         parameter_names = jmespath.search('Parameters[].Name', page) + parameter_names
